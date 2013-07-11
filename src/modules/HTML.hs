@@ -16,9 +16,17 @@ module HTML (
 , html
 ) where
 
-data HTMLElement = HTMLRadio    String [(String, String)] String   |
-                   HTMLCheckbox String [(String, String)] [String] |
-                   HTMLSelect   String [(String, String)] [String]
+type Name = String
+type OptionValue = String
+type OptionLabel = String
+type SelectOption = (OptionValue, OptionLabel)
+type SelectedOption = String
+type Selected = Bool
+
+data HTMLElement
+  = HTMLRadio    Name [SelectOption] SelectedOption
+  | HTMLCheckbox Name [SelectOption] [SelectedOption]
+  | HTMLSelect   Name [SelectOption] [SelectedOption]
   deriving (Show)
 
 html :: HTMLElement -> String
@@ -26,18 +34,20 @@ html :: HTMLElement -> String
 html (HTMLRadio nm xs sel) = foldl
   (\acc (k, v) -> acc ++ format' (nm, k, v, k == sel)) "" xs
   where
-    format' :: (String, String, String, Bool) -> String
+    format' :: (Name, OptionValue, OptionLabel, Selected) -> String
     format' (nm, k, v, y) =
-      "<li><label><input type=\"radio\" name=\"" ++ nm ++ "\" value=\"" ++ k ++ "\"" ++
+      "<li><label><input type=\"radio\" " ++
+      "name=\"" ++ nm ++ "\" value=\"" ++ k ++ "\"" ++
       (if y then " checked=\"checked\"" else "") ++ "></label></li>"
 
 -- HTMLCheckbox
 html (HTMLCheckbox nm xs sels) = foldl
   (\acc (k, v) -> acc ++ format' (nm, k, v, (k `elem` sels))) "" xs
   where
-    format' :: (String, String, String, Bool) -> String
+    format' :: (Name, OptionValue, OptionLabel, Selected) -> String
     format' (nm, k, v, y) =
-      "<li><label><input type=\"checkbox\" name=\"" ++ nm ++ "\" value=\"" ++ k ++ "\"" ++
+      "<li><label><input type=\"checkbox\" " ++
+      "name=\"" ++ nm ++ "\" value=\"" ++ k ++ "\"" ++
       (if y then " checked=\"checked\"" else "") ++ "></label></li>"
 
 -- HTMLSelect
@@ -45,6 +55,7 @@ html (HTMLSelect nm xs sels) = (foldl
   (\acc (k, v) -> acc ++ format' (k, v, (k `elem` sels)))
   ("<select name=\"" ++ nm ++ "\">") xs) ++ "</select>"
   where
-    format' :: (String, String, Bool) -> String
+    format' :: (OptionValue, OptionLabel, Selected) -> String
     format' (k, v, y) =
-      "<option value=\"" ++ k ++ "\"" ++ (if y then " selected=\"selected\"" else "") ++ ">" ++ v ++ "</option>"
+      "<option value=\"" ++ k ++ "\"" ++
+      (if y then " selected=\"selected\"" else "") ++ ">" ++ v ++ "</option>"
