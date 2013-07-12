@@ -16,6 +16,7 @@ Library
                    , Example.Shapes
                    , Example.HTML
                    , Example.Validator
+                   , Example.Tree
   Ghc-Options:       -Wall
   Hs-Source-Dirs:    src/modules
 

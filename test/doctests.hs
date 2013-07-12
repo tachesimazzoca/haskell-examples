@@ -8,4 +8,5 @@ main = doctest [ "src/modules/Example/Day.hs"
                , "src/modules/Example/Vector.hs"
                , "src/modules/Example/Shapes.hs"
                , "src/modules/Example/HTML.hs"
-               , "src/modules/Example/Validator.hs" ]
+               , "src/modules/Example/Validator.hs"
+               , "src/modules/Example/Tree.hs" ]
