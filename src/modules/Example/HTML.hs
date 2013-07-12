@@ -40,7 +40,7 @@ html (HTMLRadio nm xs sel) = foldl
       (if y then " checked=\"checked\"" else "") ++ ">" ++ v ++ "</label></li>"
 
 html (HTMLCheckbox nm xs sels) = foldl
-  (\acc (k, v) -> acc ++ format' (nm, k, v, (k `elem` sels))) "" xs
+  (\acc (k, v) -> acc ++ format' (nm, k, v, k `elem` sels)) "" xs
   where
     format' :: (Name, OptionValue, OptionLabel, Selected) -> String
     format' (s, k, v, y) =
@@ -48,9 +48,9 @@ html (HTMLCheckbox nm xs sels) = foldl
       "name=\"" ++ s ++ "\" value=\"" ++ k ++ "\"" ++
       (if y then " checked=\"checked\"" else "") ++ ">" ++ v ++ "</label></li>"
 
-html (HTMLSelect nm xs sels) = (foldl
-  (\acc (k, v) -> acc ++ format' (k, v, (k `elem` sels)))
-  ("<select name=\"" ++ nm ++ "\">") xs) ++ "</select>"
+html (HTMLSelect nm xs sels) = foldl
+  (\acc (k, v) -> acc ++ format' (k, v, k `elem` sels))
+  ("<select name=\"" ++ nm ++ "\">") xs ++ "</select>"
   where
     format' :: (OptionValue, OptionLabel, Selected) -> String
     format' (k, v, y) =

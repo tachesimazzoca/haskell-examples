@@ -8,7 +8,8 @@ data Validator
   | RangeLengthValidator (Maybe Int) (Maybe Int)
   deriving (Show)
 
--- |
+-- | Validate a string
+--
 -- >>> validate RequiredValidator []
 -- Left "is required"
 -- >>> validate RequiredValidator "foo"

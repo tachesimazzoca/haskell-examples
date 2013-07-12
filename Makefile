@@ -5,18 +5,22 @@ build:
 	@cabal configure --prefix=`readlink -f .` --user --enable-tests
 	@cabal build
 
-.PHONY: install
-install:
-	@cabal install --prefix=`readlink -f .` --user
-
 .PHONY: test 
 test:
 	@cabal test
 
-.PHONY: clean
-clean:
-	@cabal clean && rm -rf lib share
+.PHONY: checkstyle
+checkstyle:
+	@find src -name *.hs | xargs ~/.cabal/bin/hlint
 
 .PHONY: docs
 docs:
 	@cabal haddock 
+
+.PHONY: install
+install:
+	@cabal install --prefix=`readlink -f .` --user
+
+.PHONY: clean
+clean:
+	@cabal clean && rm -rf lib share

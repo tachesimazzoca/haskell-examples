@@ -30,4 +30,4 @@ tellPerson (Person {
   firstName = fn
 , lastName = ln
 , age = a }) =
-    "I'm " ++ fn ++ " " ++ ln ++ ", " ++ (show a) ++ " years old."
+    "I'm " ++ fn ++ " " ++ ln ++ ", " ++ show a ++ " years old."
