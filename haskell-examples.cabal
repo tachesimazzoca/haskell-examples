@@ -18,6 +18,7 @@ Library
                    , Example.Validator
                    , Example.Tree
                    , Example.Setting
+                   , Example.Recursion
   Ghc-Options:       -Wall
   Hs-Source-Dirs:    src/modules
 
