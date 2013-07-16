@@ -18,9 +18,9 @@ main = do
 -- >>> calc ["NaN", "12", "-"]
 -- -12
 calc :: [String] -> Int
-calc xs = head $ (foldl f [] xs) ++ [0]
+calc xs = head $ foldl f [] xs ++ [0]
   where
     f (x:y:xs) "+" = (y + x) : xs
     f (x:y:xs) "-" = (y - x) : xs
     f (x:y:xs) "*" = (y * x) : xs
-    f xs x = (fst $ head $ (reads x :: [(Int, String)]) ++ [(0, "")]) : xs
+    f xs x = (fst . head $ (reads x :: [(Int, String)]) ++ [(0, "")]) : xs
