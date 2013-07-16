@@ -20,6 +20,7 @@ Library
                    , Example.Setting
                    , Example.Recursion
                    , Example.HigherOrderFunction
+                   , Example.Road
   Ghc-Options:       -Wall
   Hs-Source-Dirs:    src/modules
 
