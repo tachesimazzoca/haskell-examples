@@ -19,6 +19,7 @@ Library
                    , Example.Tree
                    , Example.Setting
                    , Example.Recursion
+                   , Example.HigherOrderFunction
   Ghc-Options:       -Wall
   Hs-Source-Dirs:    src/modules
 

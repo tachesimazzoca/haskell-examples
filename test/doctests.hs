@@ -11,4 +11,5 @@ main = doctest [ "src/modules/Example/Day.hs"
                , "src/modules/Example/Validator.hs"
                , "src/modules/Example/Tree.hs"
                , "src/modules/Example/Setting.hs"
-               , "src/modules/Example/Recursion.hs" ]
+               , "src/modules/Example/Recursion.hs"
+               , "src/modules/Example/HigherOrderFunction.hs" ]
