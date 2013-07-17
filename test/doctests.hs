@@ -13,4 +13,5 @@ main = doctest [ "src/modules/Example/Day.hs"
                , "src/modules/Example/Setting.hs"
                , "src/modules/Example/Recursion.hs"
                , "src/modules/Example/HigherOrderFunction.hs"
-               , "src/modules/Example/Road.hs" ]
+               , "src/modules/Example/Road.hs"
+               , "src/modules/Example/ApplicativeFunctor.hs" ]
