@@ -15,7 +15,7 @@ checkstyle:
 
 .PHONY: docs
 docs:
-	@cabal haddock 
+	@cabal haddock --haddock-options='--source-module=https://github.com/tachesimazzoca/haskell-examples/blob/master/src/modules/%{MODULE/.//}.hs'
 
 .PHONY: install
 install:
