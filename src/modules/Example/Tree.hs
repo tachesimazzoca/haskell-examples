@@ -1,13 +1,32 @@
-module Example.Tree (
-  Tree(..)
-, treeInsert
-, treeElem
-) where
+module Example.Tree where
+
+import qualified Data.Foldable as F
+import Data.Monoid
 
 data Tree a
   = Empty
   | Node a (Tree a) (Tree a)
   deriving (Show)
+
+-- |
+--
+-- >>> let tree = (Node 3 (Node 2 Empty (Node 5 Empty Empty)) (Node 4 Empty Empty))
+-- >>> Data.Foldable.foldl (+) 0 tree
+-- 14
+-- >>> getSum $ Data.Foldable.foldMap Sum tree
+-- 14
+-- >>> Data.Foldable.foldl (*) 1 tree
+-- 120
+-- >>> getProduct $ Data.Foldable.foldMap Product tree
+-- 120
+-- >>> Data.Foldable.foldMap (\x -> [x]) tree
+-- [2,5,3,4]
+instance F.Foldable Tree where
+  foldMap _ Empty = mempty
+  foldMap f (Node x l r) =
+    F.foldMap f l `mappend`
+    f x           `mappend`
+    F.foldMap f r
 
 -- |
 --
