@@ -10,6 +10,12 @@ module Example.Person (
 -- Person {firstName = "Hoge", lastName = "Piyo", age = 34}
 -- >>> show p1
 -- "Person {firstName = \"Hoge\", lastName = \"Piyo\", age = 34}"
+-- >>> firstName p1
+-- "Hoge"
+-- >>> lastName p1
+-- "Piyo"
+-- >>> age p1
+-- 34
 -- >>> let p2 = read "Person {firstName = \"Hoge\", lastName = \"Piyo\", age = 34}" :: Person
 -- >>> p1 == p2
 -- True
