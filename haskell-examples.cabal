@@ -23,6 +23,7 @@ Library
                    , Example.Road
                    , Example.ApplicativeFunctor
                    , Example.Monoid
+                   , Example.Monad
   Ghc-Options:       -Wall
   Hs-Source-Dirs:    src/modules
 
