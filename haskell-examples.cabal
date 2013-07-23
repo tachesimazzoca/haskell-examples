@@ -10,6 +10,7 @@ Cabal-Version:       >=1.2
 
 Library
   Build-Depends:     base >= 3 && < 5
+                   , mtl >= 2.1.2 
   Exposed-modules:   Example.Day
                    , Example.Vector
                    , Example.Person
@@ -25,6 +26,7 @@ Library
                    , Example.Monoid
                    , Example.Monad
                    , Example.MonadPlus
+                   , Example.Writer
   Ghc-Options:       -Wall
   Hs-Source-Dirs:    src/modules
 
