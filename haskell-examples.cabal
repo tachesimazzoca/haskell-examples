@@ -24,6 +24,7 @@ Library
                    , Example.ApplicativeFunctor
                    , Example.Monoid
                    , Example.Monad
+                   , Example.MonadPlus
   Ghc-Options:       -Wall
   Hs-Source-Dirs:    src/modules
 
