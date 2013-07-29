@@ -27,6 +27,7 @@ Library
                    , Example.Monad
                    , Example.MonadPlus
                    , Example.Writer
+                   , Example.State
   Ghc-Options:       -Wall
   Hs-Source-Dirs:    src/modules
 

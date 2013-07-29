@@ -18,4 +18,5 @@ main = doctest [ "src/modules/Example/Day.hs"
                , "src/modules/Example/Monoid.hs"
                , "src/modules/Example/Monad.hs"
                , "src/modules/Example/MonadPlus.hs"
-               , "src/modules/Example/Writer.hs" ]
+               , "src/modules/Example/Writer.hs"
+               , "src/modules/Example/State.hs" ]
