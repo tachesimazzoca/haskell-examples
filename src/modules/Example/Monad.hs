@@ -1,5 +1,7 @@
 module Example.Monad where
 
+import Control.Monad.Instances ()
+
 data BloodType
   = BloodTypeA
   | BloodTypeB
@@ -35,7 +37,7 @@ donateBlood BloodTypeAB (BloodTypeB, _) = Nothing
 donateBlood BloodTypeA  (BloodTypeO, _) = Nothing
 donateBlood BloodTypeB  (BloodTypeO, _) = Nothing
 donateBlood BloodTypeAB (BloodTypeO, _) = Nothing
-donateBlood x (y, xs)                   = Just (y, x : xs)
+donateBlood x (y, xs)                   = Just (y, x:xs)
 
 -- |
 --
@@ -57,6 +59,22 @@ testDonateBloodTypeO = do
   -- it should fail the pattern match, and replace the lines with Nothing.
   (x, xs) <- donateBlood BloodTypeA donor
   donateBlood BloodTypeO (x, xs)
+
+-- |
+--
+-- >>> Right (BloodTypeA, []) >>= donateBlood' BloodTypeA >>= donateBlood' BloodTypeO
+-- Right (BloodTypeA,[BloodTypeO,BloodTypeA])
+-- >>> Right (BloodTypeA, []) >>= donateBlood' BloodTypeA >>= donateBlood' BloodTypeB >>= donateBlood' BloodTypeO
+-- Left (BloodTypeA,BloodTypeB)
+donateBlood' :: BloodType -> Donor -> Either (BloodType, BloodType) Donor
+donateBlood' BloodTypeB  (BloodTypeA, _) = Left (BloodTypeA, BloodTypeB)
+donateBlood' BloodTypeAB (BloodTypeA, _) = Left (BloodTypeA, BloodTypeAB)
+donateBlood' BloodTypeA  (BloodTypeB, _) = Left (BloodTypeB, BloodTypeA)
+donateBlood' BloodTypeAB (BloodTypeB, _) = Left (BloodTypeB, BloodTypeAB)
+donateBlood' BloodTypeA  (BloodTypeO, _) = Left (BloodTypeO, BloodTypeA)
+donateBlood' BloodTypeB  (BloodTypeO, _) = Left (BloodTypeO, BloodTypeB)
+donateBlood' BloodTypeAB (BloodTypeO, _) = Left (BloodTypeO, BloodTypeAB)
+donateBlood' x (y, xs)                   = Right (y, x:xs)
 
 -- |
 --
