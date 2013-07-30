@@ -1,4 +1,4 @@
-module Example.ApplicativeFunctor where
+module Example.Applicative where
 
 import Control.Applicative (
     Applicative

@@ -22,7 +22,7 @@ Library
                    , Example.Recursion
                    , Example.HigherOrderFunction
                    , Example.Road
-                   , Example.ApplicativeFunctor
+                   , Example.Applicative
                    , Example.Monoid
                    , Example.Monad
                    , Example.MonadPlus
