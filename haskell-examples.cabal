@@ -11,6 +11,7 @@ Cabal-Version:       >=1.2
 Library
   Build-Depends:     base >= 3 && < 5
                    , mtl >= 2.1.2 
+                   , random >= 1.0.0.3 
   Exposed-modules:   Example.Day
                    , Example.Vector
                    , Example.Person
