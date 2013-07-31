@@ -1,6 +1,7 @@
 module Example.Monad where
 
 import Control.Monad.Instances ()
+import Control.Monad.Writer
 
 data BloodType
   = BloodTypeA
@@ -137,3 +138,90 @@ addPoint x y =
 -- Nothing
 blockPoint :: Int -> Maybe Int
 blockPoint _ = Nothing
+
+-- ** join
+
+-- |
+--
+-- >>> join' $ Just (Just 1)
+-- Just 1
+-- >>> runWriter $ join' $ writer (writer (1, ["Foo"]), ["Bar"])
+-- (1,["Bar","Foo"])
+join' :: (Monad m) => m (m a) -> m a
+join' = join
+--join' mm = do
+--  m <- mm
+--  m
+
+-- ** liftM
+
+-- |
+--
+-- >>> liftM' (+ 1) (Just 1)
+-- Just 2
+-- >>> fmap (+ 1) (Just 1)
+-- Just 2
+-- >>> liftM' (+ 1) [1..3]
+-- [2,3,4]
+-- >>> fmap (+ 1) [1..3]
+-- [2,3,4]
+-- >>> runWriter $ liftM' (+ 1) $ writer (1, "Foo")
+-- (2,"Foo")
+-- >>> runWriter $ fmap (+ 1) $ writer (1, "Foo")
+-- (2,"Foo")
+liftM' :: (Monad m) => (a -> b) -> m a -> m b
+liftM' = liftM
+--liftM' f m = do
+--  x <- m
+--  return (f x)
+
+-- ** filterM
+
+-- |
+--
+-- >>> runWriter $ keepLowerCase "foo"
+-- (True,[])
+-- >>> runWriter $ keepLowerCase "Bar"
+-- (False,["Bar"])
+-- >>> runWriter $ filterM keepLowerCase ["Foo", "bar", "123"]
+-- (["bar"],["Foo","123"])
+keepLowerCase :: String -> Writer [String] Bool
+keepLowerCase s =
+  let
+    xs = [ x | x <- s, x `notElem` ['a'..'z'] ]
+  in
+    case xs of
+      [] -> return True
+      _ -> do
+        tell [s]
+        return False
+
+-- |
+--
+-- >>> powerset []
+-- [[]]
+-- >>> powerset ["Foo"]
+-- [["Foo"],[]]
+-- >>> powerset ["Foo","Bar","Buz"]
+-- [["Foo","Bar","Buz"],["Foo","Bar"],["Foo","Buz"],["Foo"],["Bar","Buz"],["Bar"],["Buz"],[]]
+-- >>> [ x ++ y ++ z | x <- [["Foo"],[]], y <- [["Bar"],[]], z <- [["Buz"], []] ]
+-- [["Foo","Bar","Buz"],["Foo","Bar"],["Foo","Buz"],["Foo"],["Bar","Buz"],["Bar"],["Buz"],[]]
+powerset :: [a] -> [[a]]
+powerset = filterM (const [True, False])
+
+-- ** foldM
+
+-- |
+--
+-- >>> foldM divNatural 100 [2, 2]
+-- Just 25
+-- >>> foldM divNatural 100 [2, 3]
+-- Just 16
+-- >>> foldM divNatural 100 [2, 0]
+-- Nothing
+-- >>> foldM divNatural 100 [2, -2]
+-- Nothing
+divNatural :: Int -> Int -> Maybe Int
+divNatural acc x
+          | x > 0    = Just (acc `div` x)
+          | otherwise = Nothing
