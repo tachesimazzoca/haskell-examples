@@ -3,6 +3,52 @@ module Example.Monad where
 import Control.Monad.Instances ()
 import Control.Monad.Writer
 
+-- |
+--
+-- >>> (Just 2) `comb` (\x -> Just (x * 2))
+-- Just 4
+-- >>> (Just 2) `comb` (const Nothing) `comb` (\x -> Just (x * 2))
+-- Nothing
+comb :: Maybe a -> (a -> Maybe b) -> Maybe b
+comb Nothing _ = Nothing
+comb (Just x) f = f x
+
+-- |
+--
+-- >>> half 0
+-- Nothing
+-- >>> half (-1)
+-- Nothing
+-- >>> half 1
+-- Nothing
+-- >>> half 2
+-- Just 1
+half :: Int -> Maybe Int
+half 0 = Nothing
+half x
+     | x < 0     = Nothing
+     | odd x     = Nothing
+     | otherwise = Just (x `div` 2)
+
+-- |
+--
+-- >>> halfAndHalf 0
+-- Nothing
+-- >>> halfAndHalf (-1)
+-- Nothing
+-- >>> halfAndHalf 1
+-- Nothing
+-- >>> halfAndHalf 2
+-- Nothing
+-- >>> halfAndHalf 3
+-- Nothing
+-- >>> halfAndHalf 4
+-- Just 1
+-- >>> halfAndHalf 8
+-- Just 2
+halfAndHalf :: Int -> Maybe Int
+halfAndHalf x = (Just x) `comb` half `comb` half
+
 data BloodType
   = BloodTypeA
   | BloodTypeB
@@ -14,21 +60,21 @@ type Donor = (BloodType, [BloodType])
 
 -- |
 --
--- >>> Just (BloodTypeA, []) >>= donateBlood BloodTypeA >>= donateBlood BloodTypeO
+-- >>> return (BloodTypeA, []) >>= donateBlood BloodTypeA >>= donateBlood BloodTypeO
 -- Just (BloodTypeA,[BloodTypeO,BloodTypeA])
--- >>> Just (BloodTypeA, []) >>= donateBlood BloodTypeA >>= donateBlood BloodTypeB >>= donateBlood BloodTypeO
+-- >>> return (BloodTypeA, []) >>= donateBlood BloodTypeA >>= donateBlood BloodTypeB >>= donateBlood BloodTypeO
 -- Nothing
--- >>> Just (BloodTypeB, []) >>= donateBlood BloodTypeB >>= donateBlood BloodTypeO
+-- >>> return (BloodTypeB, []) >>= donateBlood BloodTypeB >>= donateBlood BloodTypeO
 -- Just (BloodTypeB,[BloodTypeO,BloodTypeB])
--- >>> Just (BloodTypeB, []) >>= donateBlood BloodTypeB >>= donateBlood BloodTypeA >>= donateBlood BloodTypeO
+-- >>> return (BloodTypeB, []) >>= donateBlood BloodTypeB >>= donateBlood BloodTypeA >>= donateBlood BloodTypeO
 -- Nothing
--- >>> Just (BloodTypeO, []) >>= donateBlood BloodTypeO >>= donateBlood BloodTypeO
+-- >>> return (BloodTypeO, []) >>= donateBlood BloodTypeO >>= donateBlood BloodTypeO
 -- Just (BloodTypeO,[BloodTypeO,BloodTypeO])
--- >>> Just (BloodTypeO, []) >>= donateBlood BloodTypeO >>= donateBlood BloodTypeA >>= donateBlood BloodTypeO
+-- >>> return(BloodTypeO, []) >>= donateBlood BloodTypeO >>= donateBlood BloodTypeA >>= donateBlood BloodTypeO
 -- Nothing
--- >>> Just (BloodTypeAB, []) >>= donateBlood BloodTypeB >>= donateBlood BloodTypeA
+-- >>> return (BloodTypeAB, []) >>= donateBlood BloodTypeB >>= donateBlood BloodTypeA
 -- Just (BloodTypeAB,[BloodTypeA,BloodTypeB])
--- >>> Just (BloodTypeAB, []) >>= donateBlood BloodTypeO >>= donateBlood BloodTypeB >>= donateBlood BloodTypeA
+-- >>> return (BloodTypeAB, []) >>= donateBlood BloodTypeO >>= donateBlood BloodTypeB >>= donateBlood BloodTypeA
 -- Just (BloodTypeAB,[BloodTypeA,BloodTypeB,BloodTypeO])
 donateBlood :: BloodType -> Donor -> Maybe Donor
 donateBlood BloodTypeB  (BloodTypeA, _) = Nothing
@@ -63,9 +109,9 @@ testDonateBloodTypeO = do
 
 -- |
 --
--- >>> Right (BloodTypeA, []) >>= donateBlood' BloodTypeA >>= donateBlood' BloodTypeO
+-- >>> return (BloodTypeA, []) >>= donateBlood' BloodTypeA >>= donateBlood' BloodTypeO
 -- Right (BloodTypeA,[BloodTypeO,BloodTypeA])
--- >>> Right (BloodTypeA, []) >>= donateBlood' BloodTypeA >>= donateBlood' BloodTypeB >>= donateBlood' BloodTypeO
+-- >>> return (BloodTypeA, []) >>= donateBlood' BloodTypeA >>= donateBlood' BloodTypeB >>= donateBlood' BloodTypeO
 -- Left (BloodTypeA,BloodTypeB)
 donateBlood' :: BloodType -> Donor -> Either (BloodType, BloodType) Donor
 donateBlood' BloodTypeB  (BloodTypeA, _) = Left (BloodTypeA, BloodTypeB)
