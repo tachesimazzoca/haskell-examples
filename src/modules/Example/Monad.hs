@@ -5,16 +5,6 @@ import Control.Monad.Writer
 
 -- |
 --
--- >>> (Just 2) `comb` (\x -> Just (x * 2))
--- Just 4
--- >>> (Just 2) `comb` (const Nothing) `comb` (\x -> Just (x * 2))
--- Nothing
-comb :: Maybe a -> (a -> Maybe b) -> Maybe b
-comb Nothing _ = Nothing
-comb (Just x) f = f x
-
--- |
---
 -- >>> half 0
 -- Nothing
 -- >>> half (-1)
@@ -47,7 +37,55 @@ half x
 -- >>> halfAndHalf 8
 -- Just 2
 halfAndHalf :: Int -> Maybe Int
-halfAndHalf x = (Just x) `comb` half `comb` half
+halfAndHalf x = Just x >>= half >>= half
+
+-- |
+--
+-- >>> halfWith 1 2
+-- Just 1
+-- >>> halfWith 2 8
+-- Just 2
+halfWith :: Int -> Int -> Maybe Int
+halfWith n = foldr (<=<) return (replicate n half)
+
+-- | The bind function like ">>="
+--
+-- >>> (Just 2) `comb` (\x -> Just (x * 2))
+-- Just 4
+-- >>> (Just 2) `comb` (const Nothing) `comb` (\x -> Just (x * 2))
+-- Nothing
+comb :: Maybe a -> (a -> Maybe b) -> Maybe b
+comb Nothing _ = Nothing
+comb (Just x) f = f x
+
+-- | Compose two monadic functions like "<=<"
+--
+-- >>> (Just) `comp` (\x -> Just (x * 2)) $ 2
+-- Just 4
+-- >>> (const Nothing) `comp` (\x -> Just (x * 2)) $ 2
+-- Nothing
+comp :: (b -> Maybe c) -> (a -> Maybe b) -> a -> Maybe c
+comp f g x = g x `comb` f
+
+-- |
+--
+-- >>> halfAndHalf' 2
+-- Nothing
+-- >>> halfAndHalf' 4
+-- Just 1
+-- >>> halfAndHalf' 8
+-- Just 2
+halfAndHalf' :: Int -> Maybe Int
+halfAndHalf' x = Just x `comb` half `comb` half
+
+-- |
+--
+-- >>> halfWith' 1 2
+-- Just 1
+-- >>> halfWith' 2 8
+-- Just 2
+halfWith' :: Int -> Int -> Maybe Int
+halfWith' n = foldr comp return (replicate n half)
 
 data BloodType
   = BloodTypeA
