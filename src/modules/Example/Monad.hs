@@ -87,6 +87,8 @@ halfAndHalf' x = Just x `comb` half `comb` half
 halfWith' :: Int -> Int -> Maybe Int
 halfWith' n = foldr comp return (replicate n half)
 
+-- ** Blood Type Operations
+
 data BloodType
   = BloodTypeA
   | BloodTypeB
@@ -161,35 +163,7 @@ donateBlood' BloodTypeB  (BloodTypeO, _) = Left (BloodTypeO, BloodTypeB)
 donateBlood' BloodTypeAB (BloodTypeO, _) = Left (BloodTypeO, BloodTypeAB)
 donateBlood' x (y, xs)                   = Right (y, x:xs)
 
--- |
---
--- >>> listOfTuples
--- [(1,'a'),(1,'b'),(2,'a'),(2,'b')]
--- >>> [1..2] >>= \x -> ['a'..'b'] >>= \y -> [(x, y)]
--- [(1,'a'),(1,'b'),(2,'a'),(2,'b')]
--- >>> [ (x, y) | x <- [1..2], y <- ['a'..'b'] ]
--- [(1,'a'),(1,'b'),(2,'a'),(2,'b')]
-listOfTuples :: [(Int, Char)]
-listOfTuples = do
-  k <- [1..2]
-  v <- ['a'..'b']
-  return (k, v)
-
--- |
---
--- >>> fizzbuzz [1..5]
--- [(1,"1"),(2,"2"),(3,"fizz"),(4,"4"),(5,"buzz")]
-fizzbuzz :: [Int] -> [(Int, String)]
-fizzbuzz xs = do
-  n <- xs
-  let f x
-        | fizz && buzz = "fizzbuzz"
-        | fizz = "fizz"
-        | buzz = "buzz"
-        | otherwise = show x
-        where fizz = x `mod` 3 == 0
-              buzz = x `mod` 5 == 0
-  return (n, f n)
+-- ** Point Operations
 
 -- | Add a point in the range between 0 and 100.
 --
@@ -199,15 +173,15 @@ fizzbuzz xs = do
 -- Just 100
 -- >>> addPoint (-1) 0
 -- Nothing
--- >>> Just 0 >>= addPoint 100 >>= addPoint 10
+-- >>> return 0 >>= addPoint 100 >>= addPoint 10
 -- Nothing
--- >>> Just 0 >>= addPoint 100 >>= addPoint (-101) >>= addPoint 10
+-- >>> return 0 >>= addPoint 100 >>= addPoint (-101) >>= addPoint 10
 -- Nothing
--- >>> Just 0 >>= addPoint 100 >>= addPoint (-10)
+-- >>> return 0 >>= addPoint 100 >>= addPoint (-10)
 -- Just 90
--- >>> Just 0 >>= addPoint 100 >> Nothing >>= addPoint (-10)
+-- >>> return 0 >>= addPoint 100 >> Nothing >>= addPoint (-10)
 -- Nothing
--- >>> Just 0 >>= addPoint 100 >> Just 20 >>= addPoint (-10)
+-- >>> return 0 >>= addPoint 100 >> Just 20 >>= addPoint (-10)
 -- Just 10
 addPoint :: Int -> Int -> Maybe Int
 addPoint x y =
@@ -216,9 +190,9 @@ addPoint x y =
 
 -- |
 --
--- >>> Just 0 >>= addPoint 100 >>= addPoint (-10)
+-- >>> return 0 >>= addPoint 100 >>= addPoint (-10)
 -- Just 90
--- >>> Just 0 >>= addPoint 100 >>= blockPoint >>= addPoint (-10)
+-- >>> return 0 >>= addPoint 100 >>= blockPoint >>= addPoint (-10)
 -- Nothing
 blockPoint :: Int -> Maybe Int
 blockPoint _ = Nothing
@@ -309,3 +283,35 @@ divNatural :: Int -> Int -> Maybe Int
 divNatural acc x
           | x > 0    = Just (acc `div` x)
           | otherwise = Nothing
+
+-- ** Misc
+
+-- |
+--
+-- >>> listOfTuples
+-- [(1,'a'),(1,'b'),(2,'a'),(2,'b')]
+-- >>> [1..2] >>= \x -> ['a'..'b'] >>= \y -> [(x, y)]
+-- [(1,'a'),(1,'b'),(2,'a'),(2,'b')]
+-- >>> [ (x, y) | x <- [1..2], y <- ['a'..'b'] ]
+-- [(1,'a'),(1,'b'),(2,'a'),(2,'b')]
+listOfTuples :: [(Int, Char)]
+listOfTuples = do
+  k <- [1..2]
+  v <- ['a'..'b']
+  return (k, v)
+
+-- | fizzbuzz in do notation
+--
+-- >>> fizzbuzz [1..5]
+-- [(1,"1"),(2,"2"),(3,"fizz"),(4,"4"),(5,"buzz")]
+fizzbuzz :: [Int] -> [(Int, String)]
+fizzbuzz xs = do
+  n <- xs
+  let f x
+        | fizz && buzz = "fizzbuzz"
+        | fizz = "fizz"
+        | buzz = "buzz"
+        | otherwise = show x
+        where fizz = x `mod` 3 == 0
+              buzz = x `mod` 5 == 0
+  return (n, f n)
