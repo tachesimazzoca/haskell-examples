@@ -11,7 +11,7 @@ test:
 
 .PHONY: checkstyle
 checkstyle:
-	@find src -name *.hs | xargs ~/.cabal/bin/hlint
+	@find src/modules -name *.hs | xargs ~/.cabal/bin/hlint
 
 .PHONY: docs
 docs:
