@@ -30,6 +30,7 @@ Library
                    , Example.Writer
                    , Example.State
                    , Example.Dice
+                   , Example.Sheep
   Ghc-Options:       -Wall
   Hs-Source-Dirs:    src/modules
 
