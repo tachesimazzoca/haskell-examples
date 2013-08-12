@@ -21,4 +21,5 @@ main = doctest [ "src/modules/Example/Day.hs"
                , "src/modules/Example/Writer.hs"
                , "src/modules/Example/State.hs"
                , "src/modules/Example/Dice.hs"
-               , "src/modules/Example/Sheep.hs" ]
+               , "src/modules/Example/Sheep.hs"
+               , "src/modules/Example/Calc.hs" ]
