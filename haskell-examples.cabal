@@ -36,6 +36,7 @@ Library
                    , Example.Sheep
                    , Example.Calc
                    , Example.Kinship
+                   , Example.Parser
   Hs-Source-Dirs:    src/modules
 
 Test-Suite doctest
