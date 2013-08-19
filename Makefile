@@ -2,25 +2,22 @@ all: build
 
 .PHONY: build
 build:
-	@cabal configure --prefix=`readlink -f .` --user --enable-tests
-	@cabal build
+	@cabal-dev install --only-dependencies --enable-tests
+	@cabal-dev configure --enable-tests
+	@cabal-dev build
 
 .PHONY: test 
 test:
-	@cabal test
+	@cabal-dev test
 
 .PHONY: checkstyle
 checkstyle:
-	@find src/modules -name *.hs | xargs ~/.cabal/bin/hlint
+	@find src/modules -name *.hs | xargs hlint
 
 .PHONY: docs
 docs:
-	@cabal haddock --haddock-options='--source-module=https://github.com/tachesimazzoca/haskell-examples/blob/master/src/modules/%{MODULE/.//}.hs'
-
-.PHONY: install
-install:
-	@cabal install --prefix=`readlink -f .` --user
+	@cabal-dev haddock --haddock-options='--source-module=https://github.com/tachesimazzoca/haskell-examples/blob/master/src/modules/%{MODULE/.//}.hs'
 
 .PHONY: clean
 clean:
-	@cabal clean && rm -rf lib share
+	@cabal-dev clean

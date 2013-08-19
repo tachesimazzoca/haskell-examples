@@ -45,7 +45,7 @@ parse s = parse' (words s) [] 1
 -- "6"
 -- >>> calc (sum) "1 2 a"
 -- "Parse error at item 3: Invalid string 'a'"
-calc :: (Num a) => ([a] -> a) -> String -> String
+calc :: (Show a, Num a) => ([a] -> a) -> String -> String
 calc f a =
   let (Right s) = do {
     vs <- parse a;

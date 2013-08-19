@@ -6,10 +6,12 @@ License-file:        LICENSE
 Author:              Takeshi Matsuoka
 Maintainer:          tachesimazzoca@gmail.com
 Build-Type:          Simple
-Cabal-Version:       >=1.2
+Cabal-Version:       >=1.10
 
 Library
-  Build-Depends:     base >= 3 && < 5
+  Default-Language:  Haskell2010 
+  Ghc-Options:       -Wall
+  Build-Depends:     base >= 4 && < 5
                    , mtl >= 2.1.2 
                    , random >= 1.0.0.3 
   Exposed-modules:   Example.Day
@@ -32,11 +34,11 @@ Library
                    , Example.Dice
                    , Example.Sheep
                    , Example.Calc
-  Ghc-Options:       -Wall
   Hs-Source-Dirs:    src/modules
 
 Test-Suite doctest
   Type:              exitcode-stdio-1.0
+  Default-Language:  Haskell2010 
   HS-Source-Dirs:    test
   Ghc-Options:       -threaded -Wall
   Main-Is:           doctests.hs

@@ -63,7 +63,7 @@ probTrue p = foldl (\acc (a, r) -> if a then acc + r else acc) 0 (getProb p)
 --
 -- >>> map (\x -> probTrue $ sumFacets cubeDie cubeDie x) [2..12]
 -- [1 % 36,1 % 18,1 % 12,1 % 9,5 % 36,1 % 6,5 % 36,1 % 9,1 % 12,1 % 18,1 % 36]
-sumFacets :: (Num a) => Prob a -> Prob a -> a -> Prob Bool
+sumFacets :: (Eq a, Num a) => Prob a -> Prob a -> a -> Prob Bool
 sumFacets d1 d2 n = do
   n1 <- d1
   n2 <- d2

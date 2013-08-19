@@ -1,4 +1,3 @@
-/bin
-/lib
-/share
+*~
+/cabal-dev
 /dist
