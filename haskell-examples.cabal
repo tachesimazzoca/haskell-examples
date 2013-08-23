@@ -37,6 +37,7 @@ Library
                    , Example.Calc
                    , Example.Kinship
                    , Example.Parser
+                   , Example.Poker
   Hs-Source-Dirs:    src/modules
 
 Test-Suite doctest
